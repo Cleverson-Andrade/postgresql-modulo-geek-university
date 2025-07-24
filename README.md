@@ -1,4 +1,4 @@
-# Módulo 1 - PostgreSQL: Curso "Bancos de Dados SQL e NoSQL do básico ao avançado"
+# PostgreSQL: Curso "Bancos de Dados SQL e NoSQL do básico ao avançado"
 
 Este repositório contém os códigos SQL desenvolvidos e utilizados durante o Módulo 1 de PostgreSQL do curso "Bancos de Dados SQL e NoSQL do básico ao avançado" da Geek University, disponível na Udemy.
 
