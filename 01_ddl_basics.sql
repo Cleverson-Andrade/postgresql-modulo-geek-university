@@ -84,17 +84,3 @@ VALUES ('Angelina Jolie', 'Rua da paz, 44', 'Nova Lima', 'Santos', 'SP', '121213
 -- SELECTS
 SELECT *
 FROM pacientes;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
