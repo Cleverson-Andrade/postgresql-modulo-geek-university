@@ -66,29 +66,4 @@ SELECT f.nome, f.sobrenome, e.pais, p.salario
 	WHERE f.id_escritorio = e.id 
 		AND f.id = p.id_funcionario
 		AND salario < (SELECT AVG(salario) FROM pagamentos);
-*/		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/	
