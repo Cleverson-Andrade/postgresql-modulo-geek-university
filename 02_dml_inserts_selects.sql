@@ -155,33 +155,3 @@ FROM tipos_produto AS tp
 	INNER JOIN produtos AS p
 	ON p.codigo_tipo = tp.codigo;
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
