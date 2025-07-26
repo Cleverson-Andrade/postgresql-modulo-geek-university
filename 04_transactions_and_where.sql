@@ -87,21 +87,3 @@ FROM produtos
 	GROUP BY id_categoria 
 	HAVING MAX(preco_venda) > 10;
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
