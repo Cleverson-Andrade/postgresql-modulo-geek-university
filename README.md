@@ -98,4 +98,3 @@ Each file is designed to be **executed independently**, making it suitable for f
 
 ---
 **Cleverson Moura Andrade**  
-Database student and enthusiast, focused on SQL, PostgreSQL, MySQL, and practical database applications.
