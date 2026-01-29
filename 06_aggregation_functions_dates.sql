@@ -1,69 +1,104 @@
--- Subconsulta
+-- ============================================================
+-- Subconsultas / Subqueries
+-- ============================================================
 
-/*
- CREATE TABLE escritorios(
+
+-- Criação das tabelas base para os exemplos
+-- Base tables creation for subquery examples
+
+CREATE TABLE escritorios(
 	id SERIAL PRIMARY KEY,
 	pais VARCHAR(30) NOT NULL
 );
 
- CREATE TABLE funcionarios(
+CREATE TABLE funcionarios(
 	id SERIAL PRIMARY KEY, 
 	nome VARCHAR(20) NOT NULL,
 	sobrenome VARCHAR(20) NOT NULL,
 	id_escritorio INT REFERENCES escritorios(id) NOT NULL
 );
 
- CREATE TABLE pagamentos(
+CREATE TABLE pagamentos(
 	id SERIAL PRIMARY KEY,
 	id_funcionario INT REFERENCES funcionarios(id) NOT NULL,
 	salario DECIMAL(8,2) NOT NULL,
 	data DATE NOT NULL
 );
 
- INSERT INTO escritorios (pais) VALUES ('Brasil');
- INSERT INTO escritorios (pais) VALUES ('Estados Unidos');
- INSERT INTO escritorios (pais) VALUES ('Alemanha');
- INSERT INTO escritorios (pais) VALUES ('França');
+-- Inserção de dados de exemplo
+-- Sample data insertion
 
- INSERT INTO funcionarios (nome, sobrenome, id_escritorio) VALUES ('Pedro', 'Souza', 1);
- INSERT INTO funcionarios (nome, sobrenome, id_escritorio) VALUES ('Sandra', 'Rubin', 2);
- INSERT INTO funcionarios (nome, sobrenome, id_escritorio) VALUES ('Mikail', 'Schumer', 3);
- INSERT INTO funcionarios (nome, sobrenome, id_escritorio) VALUES ('Olivier', 'Gloçan', 4);
+INSERT INTO escritorios (pais) VALUES ('Brasil');
+INSERT INTO escritorios (pais) VALUES ('Estados Unidos');
+INSERT INTO escritorios (pais) VALUES ('Alemanha');
+INSERT INTO escritorios (pais) VALUES ('França');
 
- INSERT INTO pagamentos (id_funcionario, salario, data) VALUES (1, '5347.55', '2019-03-17');
- INSERT INTO pagamentos (id_funcionario, salario, data) VALUES (2, '9458.46', '2019-03-17');
- INSERT INTO pagamentos (id_funcionario, salario, data) VALUES (3, '4669.67', '2019-03-17');
- INSERT INTO pagamentos (id_funcionario, salario, data) VALUES (4, '2770.32', '2019-03-17');
-*/
+INSERT INTO funcionarios (nome, sobrenome, id_escritorio) VALUES ('Pedro', 'Souza', 1);
+INSERT INTO funcionarios (nome, sobrenome, id_escritorio) VALUES ('Sandra', 'Rubin', 2);
+INSERT INTO funcionarios (nome, sobrenome, id_escritorio) VALUES ('Mikail', 'Schumer', 3);
+INSERT INTO funcionarios (nome, sobrenome, id_escritorio) VALUES ('Olivier', 'Gloçan', 4);
 
--- Exemplo 1
-/*
+INSERT INTO pagamentos (id_funcionario, salario, data) VALUES (1, '5347.55', '2019-03-17');
+INSERT INTO pagamentos (id_funcionario, salario, data) VALUES (2, '9458.46', '2019-03-17');
+INSERT INTO pagamentos (id_funcionario, salario, data) VALUES (3, '4669.67', '2019-03-17');
+INSERT INTO pagamentos (id_funcionario, salario, data) VALUES (4, '2770.32', '2019-03-17');
+
+
+-- ============================================================
+-- Exemplo 1: Subconsulta com IN
+-- Example 1: Subquery using IN
+-- Objetivo: Buscar funcionários que trabalham no Brasil
+-- Goal: Retrieve employees who work in Brazil
+-- ============================================================
+
+
 SELECT nome, sobrenome 
 FROM funcionarios 
-	WHERE id_escritorio IN (SELECT id FROM escritorios WHERE pais = 'Brasil');
-*/
+WHERE id_escritorio IN (
+	SELECT id 
+	FROM escritorios 
+	WHERE pais = 'Brasil'
+);
 
--- Sem subconsulta
-/*
- SELECT nome, sobrenome 
- FROM funcionarios, escritorios AS e 
- WHERE id_escritorio = e.id AND e.pais = 'Brasil'; 
-*/
 
--- Exemplo 2
-/*
- SELECT f.nome, f.sobrenome, e.pais, p.salario 
-	FROM pagamentos AS p, funcionarios AS f, escritorios AS e
-	WHERE f.id_escritorio = e.id 
-		AND f.id = p.id_funcionario
-		AND salario = (SELECT MAX(salario) FROM pagamentos);
-*/
+-- ============================================================
+-- Exemplo 1 (sem subconsulta)
+-- Example 1 (without subquery, using JOIN)
+-- ============================================================
 
--- Exemplo 3
-/*
+
+SELECT nome, sobrenome 
+FROM funcionarios, escritorios AS e 
+WHERE id_escritorio = e.id 
+  AND e.pais = 'Brasil'; 
+
+
+-- ============================================================
+-- Exemplo 2: Funcionário com o maior salário
+-- Example 2: Employee with the highest salary
+-- Uso de subconsulta com função de agregação (MAX)
+-- Using subquery with aggregate function (MAX)
+-- ============================================================
+
+
 SELECT f.nome, f.sobrenome, e.pais, p.salario 
-	FROM pagamentos AS p, funcionarios AS f, escritorios AS e
-	WHERE f.id_escritorio = e.id 
-		AND f.id = p.id_funcionario
-		AND salario < (SELECT AVG(salario) FROM pagamentos);
-*/	
+FROM pagamentos AS p, funcionarios AS f, escritorios AS e
+WHERE f.id_escritorio = e.id 
+  AND f.id = p.id_funcionario
+  AND salario = (SELECT MAX(salario) FROM pagamentos);
+*/
+
+-- ============================================================
+-- Exemplo 3: Funcionários com salário abaixo da média
+-- Example 3: Employees earning below the average salary
+-- Uso de subconsulta com AVG
+-- Using subquery with AVG
+-- ============================================================
+
+
+SELECT f.nome, f.sobrenome, e.pais, p.salario 
+FROM pagamentos AS p, funcionarios AS f, escritorios AS e
+WHERE f.id_escritorio = e.id 
+  AND f.id = p.id_funcionario
+  AND salario < (SELECT AVG(salario) FROM pagamentos);
+*/
